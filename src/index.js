@@ -25,6 +25,8 @@ import TopRated from "./Components/TopRated";
 import About from "./Components/About";
 import Trailer from "./Components/Trailer";
 import Signup from "./routes/Signup";
+import Pagination from "./Components/Pagination";
+import Posts from "./Components/Posts";
 
 export default function Main() {
   const [query, setQuery] = React.useState("");
@@ -33,15 +35,29 @@ export default function Main() {
   const [searchResult, setSearchResult] = React.useState("");
   const [visible, setVisible] = React.useState(false);
   const [type, setType] = React.useState("");
+  const [posts, setPosts] = React.useState([]);
+  const [loading, setLoading] = React.useState(false);
+  const [currentPage, setCurrentPage] = React.useState(1);
+  const [postsPerPage] = React.useState(10);
+
   React.useEffect(() => {
     fetch(
       "https://api.themoviedb.org/3/movie/popular?api_key=1b1aa94594e5c58e59d2f9a61028fe64&language=en-US&page=1"
     )
       .then((res) => res.json())
-      .then((data) => setPopularMovies(data.results));
+      .then((data) => {
+        setPopularMovies(data.results);
+        setPosts(data.results);
+      });
     setQuery("");
     setType("popular");
   }, []);
+
+  const indexOfLastPost = currentPage * postsPerPage;
+  const indexOfFirstPost = indexOfLastPost - postsPerPage;
+  const currentPosts = posts.slice(indexOfFirstPost, indexOfLastPost);
+
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   const searchMovies = async (e) => {
     e.preventDefault();
@@ -94,6 +110,7 @@ export default function Main() {
                       {...props}
                       type={type}
                       movieCategory={popularMovies}
+                      posts={currentPosts}
                     />
                   )}
                 </div>
@@ -140,6 +157,11 @@ export default function Main() {
             <Route path="/invalid" component={MovieNotFound} />
             <Route component={PageNotFound} />
           </Switch>
+          <Pagination
+            postsPerPage={postsPerPage}
+            totalPosts={posts.length}
+            paginate={paginate}
+          />
         </div>
         <Footer />
       </Router>
