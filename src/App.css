@@ -2,6 +2,7 @@
 :root {
   --timeline-danger: #d9534f;
   --timeline-success: #5cb85c;
+  --timeline-warning: #f0ad4e;
   --timeline-avacado: #56a16e;
   --timeline-Pearl: #15202b;
   --timeline-fire: #e85b2a;
@@ -38,7 +39,7 @@ body {
 .fail-response {
   display: flex;
   align-items: center;
-  color: var(--warning);
+  color: var(--timeline-danger);
   font-size: 3rem;
 }
 /* ------------------------------------------------------------------------------- */
@@ -255,6 +256,9 @@ small {
 .movie-card {
   margin: 5rem 0 45rem 0;
 }
+.movie-category-title {
+  color: var(--timeline-danger);
+}
 .card {
   padding: 2rem 4rem;
   border-radius: 1rem;
@@ -292,7 +296,7 @@ small {
   padding-bottom: 2rem;
 }
 .search-result {
-  color: var(--warning);
+  color: var(--timeline-danger);
 }
 .trailer-btn {
   color: var(--timeline-timeline-classicalBlack);

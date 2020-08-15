@@ -1,6 +1,6 @@
 import * as React from "react";
-import Emoji from "../Components/Emoji";
-import { Link } from "react-router-dom";
+// import Emoji from "../Components/Emoji";
+// import { Link } from "react-router-dom";
 import tv from "../Assets/family-tv.jpg";
 export default function Signup() {
   const [username, setUsername] = React.useState("");

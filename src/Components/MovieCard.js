@@ -8,7 +8,7 @@ import Colors from "../constants/colors";
 import MovieNotFound from "../routes/movieNotFound";
 
 export default function MovieCard(props) {
-  const { movies, movieCategory, searchResult, type, posts } = props;
+  const { movies, movieCategory, searchResult, type } = props;
 
   if (movies !== undefined && type === "query") {
     if (movies.length === 0) return <MovieNotFound />;
@@ -69,8 +69,11 @@ export default function MovieCard(props) {
       <Spring from={{ marginLeft: -500 }} to={{ marginLeft: 0 }}>
         {(props) => (
           <div className="movie-card">
-            <h1 className="movie-category">Most Popular Movies</h1>
-            {posts
+            <h1 className="movie-category">
+              Most <span className="movie-category-title">20</span> Popular
+              Movies
+            </h1>
+            {movieCategory
               .filter((movieCategory) => movieCategory.poster_path)
               .map((movieCategory) => (
                 <div key={movieCategory.id} style={props}>
@@ -122,7 +125,9 @@ export default function MovieCard(props) {
       <Spring from={{ marginLeft: -500 }} to={{ marginLeft: 0 }}>
         {(props) => (
           <div className="movie-card">
-            <h1 className="movie-category">Top Rated Movies</h1>
+            <h1 className="movie-category">
+              Top <span className="movie-category-title">20</span> Rated Movies
+            </h1>
             {movieCategory
               .filter((movieCategory) => movieCategory.poster_path)
               .map((movieCategory) => (

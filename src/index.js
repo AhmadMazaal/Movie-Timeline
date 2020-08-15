@@ -26,7 +26,6 @@ import About from "./Components/About";
 import Trailer from "./Components/Trailer";
 import Signup from "./routes/Signup";
 import Pagination from "./Components/Pagination";
-import Posts from "./Components/Posts";
 
 export default function Main() {
   const [query, setQuery] = React.useState("");
@@ -35,35 +34,27 @@ export default function Main() {
   const [searchResult, setSearchResult] = React.useState("");
   const [visible, setVisible] = React.useState(false);
   const [type, setType] = React.useState("");
-  const [posts, setPosts] = React.useState([]);
-  const [loading, setLoading] = React.useState(false);
   const [currentPage, setCurrentPage] = React.useState(1);
-  const [postsPerPage] = React.useState(10);
-
+  const [totalResults, setTotalResults] = React.useState(0);
+  const apiKey = "1b1aa94594e5c58e59d2f9a61028fe64";
   React.useEffect(() => {
     fetch(
-      "https://api.themoviedb.org/3/movie/popular?api_key=1b1aa94594e5c58e59d2f9a61028fe64&language=en-US&page=1"
+      `https://api.themoviedb.org/3/movie/popular?api_key=${apiKey}&language=en-US&page=1`
     )
       .then((res) => res.json())
       .then((data) => {
         setPopularMovies(data.results);
-        setPosts(data.results);
       });
     setQuery("");
+
     setType("popular");
   }, []);
-
-  const indexOfLastPost = currentPage * postsPerPage;
-  const indexOfFirstPost = indexOfLastPost - postsPerPage;
-  const currentPosts = posts.slice(indexOfFirstPost, indexOfLastPost);
-
-  const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   const searchMovies = async (e) => {
     e.preventDefault();
     document.getElementById("queryMovie").value = null;
 
-    const url = `https://api.themoviedb.org/3/search/movie?api_key=1b1aa94594e5c58e59d2f9a61028fe64&language=en-US&query=${query}&page=1&include_adult=false`;
+    const url = `https://api.themoviedb.org/3/search/movie?api_key=${apiKey}&language=en-US&query=${query}&include_adult=false`;
     if (!query) return alert("Please enter a movie!");
     try {
       const res = await fetch(url);
@@ -73,11 +64,29 @@ export default function Main() {
       setSearchResult(query);
       setMovies(data.results);
       setQuery("");
+      setTotalResults(data.total_results);
+      console.log(data);
     } catch (err) {
       console.error(err);
       window.location = "/error";
     }
   };
+
+  const nextPage = (pageNumber) => {
+    fetch(
+      `https://api.themoviedb.org/3/search/movie?api_key=${apiKey}&language=en-US&query=${query}&page=${pageNumber}&include_adult=false`
+    )
+      .then((data) => data.json())
+      .then((data) => {
+        setPopularMovies(data.results);
+        setTotalResults(data.total_results);
+        setCurrentPage(pageNumber);
+        setType("query");
+      });
+    console.log("Next");
+  };
+  const numberPages = Math.floor(totalResults / 20);
+
   return (
     <>
       <Router>
@@ -92,7 +101,15 @@ export default function Main() {
               marginBottom: "5rem",
             }}
           />
-
+          {/* {totalResults > 20 ? (
+            <Pagination
+              pages={numberPages}
+              nextPage={nextPage}
+              currentPage={currentPage}
+            />
+          ) : (
+            ""
+          )} */}
           <Switch>
             <Route
               path="/"
@@ -110,7 +127,6 @@ export default function Main() {
                       {...props}
                       type={type}
                       movieCategory={popularMovies}
-                      posts={currentPosts}
                     />
                   )}
                 </div>
@@ -157,11 +173,6 @@ export default function Main() {
             <Route path="/invalid" component={MovieNotFound} />
             <Route component={PageNotFound} />
           </Switch>
-          <Pagination
-            postsPerPage={postsPerPage}
-            totalPosts={posts.length}
-            paginate={paginate}
-          />
         </div>
         <Footer />
       </Router>
