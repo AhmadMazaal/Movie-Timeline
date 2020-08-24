@@ -25,7 +25,13 @@ export default function Trailer(props) {
     fetchMovie();
   }, []);
   // for mobile width='350' height='250'
-  const iframe = `<iframe width='400'   height='300' src=https://www.youtube.com/embed/${movieKey} frameborder='0' allow=fullscreen; autoplay; encrypted-media;  picture-in-picture'></iframe>`;
+  let width = window.innerWidth;
+  let height = window.innerHeight;
+  let targetWidth = 0;
+  let targetHeight = 0;
+  width < 767 ? (targetWidth = 350) : (targetWidth = width * 0.65);
+  width < 767 ? (targetHeight = 250) : (targetHeight = height * 0.8);
+  const iframe = `<iframe width=${targetWidth}   height=${targetHeight} src=https://www.youtube.com/embed/${movieKey} frameborder='0' allow=fullscreen; autoplay; encrypted-media;  picture-in-picture'></iframe>`;
   const setIframe = () => {
     return {
       __html: iframe,
@@ -48,6 +54,10 @@ export default function Trailer(props) {
         className="trailer-iframe"
         dangerouslySetInnerHTML={setIframe()}
       ></div>
+      <a href="/" style={{ margin: 25 }} className="entity-link">
+        <span className="entity-icon">&laquo;</span>
+        Back to homepage
+      </a>
     </div>
   );
 }

@@ -25,7 +25,7 @@ import TopRated from "./Components/TopRated";
 import About from "./Components/About";
 import Trailer from "./Components/Trailer";
 import Signup from "./routes/Signup";
-import Pagination from "./Components/Pagination";
+// import Pagination from "./Components/Pagination";
 
 export default function Main() {
   const [query, setQuery] = React.useState("");
@@ -34,8 +34,8 @@ export default function Main() {
   const [searchResult, setSearchResult] = React.useState("");
   const [visible, setVisible] = React.useState(false);
   const [type, setType] = React.useState("");
-  const [currentPage, setCurrentPage] = React.useState(1);
-  const [totalResults, setTotalResults] = React.useState(0);
+  // const [currentPage, setCurrentPage] = React.useState(1);
+  // const [totalResults, setTotalResults] = React.useState(0);
   const apiKey = "1b1aa94594e5c58e59d2f9a61028fe64";
   React.useEffect(() => {
     fetch(
@@ -64,7 +64,7 @@ export default function Main() {
       setSearchResult(query);
       setMovies(data.results);
       setQuery("");
-      setTotalResults(data.total_results);
+      // setTotalResults(data.total_results);
       console.log(data);
     } catch (err) {
       console.error(err);
@@ -72,20 +72,20 @@ export default function Main() {
     }
   };
 
-  const nextPage = (pageNumber) => {
-    fetch(
-      `https://api.themoviedb.org/3/search/movie?api_key=${apiKey}&language=en-US&query=${query}&page=${pageNumber}&include_adult=false`
-    )
-      .then((data) => data.json())
-      .then((data) => {
-        setPopularMovies(data.results);
-        setTotalResults(data.total_results);
-        setCurrentPage(pageNumber);
-        setType("query");
-      });
-    console.log("Next");
-  };
-  const numberPages = Math.floor(totalResults / 20);
+  // const nextPage = (pageNumber) => {
+  //   fetch(
+  //     `https://api.themoviedb.org/3/search/movie?api_key=${apiKey}&language=en-US&query=${query}&page=${pageNumber}&include_adult=false`
+  //   )
+  //     .then((data) => data.json())
+  //     .then((data) => {
+  //       setPopularMovies(data.results);
+  //       setTotalResults(data.total_results);
+  //       // setCurrentPage(pageNumber);
+  //       setType("query");
+  //     });
+  //   console.log("Next");
+  // };
+  // const numberPages = Math.floor(totalResults / 20);
 
   return (
     <>

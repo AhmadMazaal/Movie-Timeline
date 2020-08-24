@@ -9,7 +9,7 @@ export default function Header(props) {
       <Link style={{ textDecoration: "none", color: "white" }} to="/">
         <h1 className="title">
           Movie <span className="title-2">Timeline </span>
-          <RiMovie2Line size="5rem" />
+          <RiMovie2Line className="header-logo" size="5rem" />
         </h1>
       </Link>
     </div>

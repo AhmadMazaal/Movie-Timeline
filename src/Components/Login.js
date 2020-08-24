@@ -21,11 +21,11 @@ export default function Login() {
           <Emoji symbol="🎬" label="cine" />
         </div> */}
         <img alt="profile" src={profile} className="login-image" />
-        <label>Email or Username</label>
+        <label for="loginEmail">Email or Username</label>
         <input
           type="email"
-          id="email"
-          name="email"
+          id="loginEmail"
+          name="loginEmail"
           placeholder="johndoe@example.com"
         />
         <label>Password</label>

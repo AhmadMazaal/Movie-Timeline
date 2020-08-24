@@ -1,7 +1,10 @@
 import * as React from "react";
 // import Emoji from "../Components/Emoji";
 // import { Link } from "react-router-dom";
+import axios from "axios";
 import tv from "../Assets/family-tv.jpg";
+import "../App.css";
+
 export default function Signup() {
   const [username, setUsername] = React.useState("");
   const [email, setEmail] = React.useState("");
@@ -10,7 +13,11 @@ export default function Signup() {
 
   const Signup = (e) => {
     e.preventDefault();
-
+    axios
+      .post("users/signup", { username })
+      .then((res) => console.log(res.data))
+      .then(() => (window.location = "/"))
+      .catch((err) => console.log(`Error: ${err}`));
     console.log(username, email, password, confirmPassword);
   };
   return (
@@ -30,8 +37,8 @@ export default function Signup() {
         <label>Username: </label>
         <input
           type="text"
-          id="email"
-          name="email"
+          id="username"
+          name="username"
           placeholder="john"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
@@ -58,13 +65,13 @@ export default function Signup() {
         <label>Confirm Password: </label>
         <input
           type="password"
-          id="password"
-          name="password"
-          placeholder="your password"
+          id="confirmPassword"
+          name="confirmPassword"
+          placeholder="confirm password"
           value={confirmPassword}
           onChange={(e) => setConfirmPassword(e.target.value)}
         />
-        <input type="submit" value="Login" id="signup-btn" className="btn" />
+        <input type="submit" value="Sign up" id="signup-btn" className="btn" />
       </form>
     </div>
   );
